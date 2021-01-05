@@ -23,11 +23,11 @@ forward AntiAirbreak_OnFootSync(playerid, packetid, BitStream:bs);
 // Callbacks
 forward OnPlayerAirBreak(playerid);
 
-public OnPlayerDisconnect(playerid)
+public OnPlayerDisconnect(playerid, reason)
 {
     __scy_ab_POS_X = 0.0, __scy_ab_POS_Y = 0.0, __scy_ab_POS_Z = 0.0;
     #if defined AntiAirbreak_OnPlayerDisconnect
-        return AntiAirbreak_OnPlayerDisconnect(playerid);
+        return AntiAirbreak_OnPlayerDisconnect(playerid, reason);
     #else
         return 1;
     #endif
@@ -40,7 +40,7 @@ public OnPlayerDisconnect(playerid)
 
 #define OnPlayerDisconnect AntiAirbreak_OnPlayerDisconnect
 #if defined AntiAirbreak_OnPlayerDisconnect
-    forward AntiAirbreak_OnPlayerDisconnect(playerid);
+    forward AntiAirbreak_OnPlayerDisconnect(playerid, reason);
 #endif
 
 #if defined FILTERSCRIPT
