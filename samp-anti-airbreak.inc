@@ -1,17 +1,12 @@
 #if defined INC_SAMP_ANTIAIRBREAK
     #endinput
 #endif
-
 #define INC_SAMP_ANTIAIRBREAK
 
 #tryinclude <Pawn.RakNet>
 
 #if !defined PAWNRAKNET_INC_
     #error "[SAMP-ANTI-AIRBREAK] Pawn.RakNet is missing."
-#endif
-
-#if PAWNRAKNET_INCLUDE_VERSION < 141
-    #error "[SAMP-ANTI-AIRBREAK] Please update Pawn.RakNet."
 #endif
 
 static 
@@ -22,7 +17,7 @@ static
 
 public OnPlayerDisconnect(playerid)
 {
-    __scy_ab_POS_X = 0, __scy_ab_POS_Y = 0, __scy_ab_POS_Z = 0;
+    __scy_ab_POS_X = 0.0, __scy_ab_POS_Y = 0.0, __scy_ab_POS_Z = 0.0;
     #if defined AntiAirbreak_OnPlayerDisconnect
         return AntiAirbreak_OnPlayerDisconnect(playerid);
     #else
@@ -54,9 +49,9 @@ public OnIncomingPacket(playerid, packetid, BitStream:bs)
         floatpower(floatabs(onFootData[PR_velocity][1]), 2.0) +
         floatpower(floatabs(onFootData[PR_velocity][2]), 2.0)) * 179.28625; // Thanks to whoever made this
 
-        if(player_speed < 27)
+        if(player_speed < 27.0)
         {
-            if(__scy_ab_POS_X != 0)
+            if(__scy_ab_POS_X != 0.0)
             {
                 if(onFootData[PR_surfingVehicleId] == 0) // Hey there, having problems? Add some immunity to the player after setting his position here :)
                 {
