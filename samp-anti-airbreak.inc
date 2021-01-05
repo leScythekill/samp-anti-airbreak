@@ -10,10 +10,8 @@
     #error "[SAMP-ANTI-AIRBREAK] Pawn.RakNet is missing. You can download it from https://github.com/katursis/Pawn.RakNet"
 #endif
 
-static 
-        Float:__scy_ab_POS_X,
-        Float:__scy_ab_POS_Y,
-        Float:__scy_ab_POS_Z,
+static
+        Float:__scy_ab_PLAYER_DATA[MAX_PLAYERS][3],
         __scy_ab__LAST_CALL;
 
 // Callbacks
@@ -21,7 +19,7 @@ forward OnPlayerAirBreak(playerid);
 
 public OnPlayerDisconnect(playerid, reason)
 {
-    __scy_ab_POS_X = 0.0, __scy_ab_POS_Y = 0.0, __scy_ab_POS_Z = 0.0;
+    __scy_ab_PLAYER_DATA[playerid][0] = 0.0, __scy_ab_PLAYER_DATA[playerid][1] = 0.0, __scy_ab_PLAYER_DATA[playerid][2] = 0.0;
     #if defined AntiAirbreak_OnPlayerDisconnect
         return AntiAirbreak_OnPlayerDisconnect(playerid, reason);
     #else
@@ -54,13 +52,13 @@ public OnIncomingPacket(playerid, packetid, BitStream:bs)
 
         if(player_speed < 27.0)
         {
-            if(__scy_ab_POS_X != 0.0)
+            if(__scy_ab_PLAYER_DATA[playerid][0] != 0.0)
             {
                 if(onFootData[PR_surfingVehicleId] == 0) // Hey there, having problems? Add some immunity to the player after setting his position here :)
                 {
-                    if(onFootData[PR_position][0] > __scy_ab_POS_X + 1.3 || onFootData[PR_position][1] > __scy_ab_POS_Y + 1.3 || onFootData[PR_position][2] > __scy_ab_POS_Z + 1.3
-                    || onFootData[PR_position][0] < __scy_ab_POS_X - 1.3 || onFootData[PR_position][1] < __scy_ab_POS_Y - 1.3
-                    || onFootData[PR_position][2] < __scy_ab_POS_Z - 1.3)
+                    if(onFootData[PR_position][0] > __scy_ab_PLAYER_DATA[playerid][0] + 1.3 || onFootData[PR_position][1] > __scy_ab_PLAYER_DATA[playerid][1] + 1.3 || onFootData[PR_position][2] > __scy_ab_PLAYER_DATA[playerid][2] + 1.3
+                    || onFootData[PR_position][0] < __scy_ab_PLAYER_DATA[playerid][0] - 1.3 || onFootData[PR_position][1] < __scy_ab_PLAYER_DATA[playerid][1] - 1.3
+                    || onFootData[PR_position][2] < __scy_ab_PLAYER_DATA[playerid][2] - 1.3)
                     {
                         if((gettime() - __scy_ab__LAST_CALL) < 2 && __scy_ab__LAST_CALL != 0)
                             CallLocalFunction("OnPlayerAirBreak", "i", playerid);
@@ -71,9 +69,10 @@ public OnIncomingPacket(playerid, packetid, BitStream:bs)
             }
         }
 
-        __scy_ab_POS_X = onFootData[PR_position][0];
-        __scy_ab_POS_Y = onFootData[PR_position][1];
-        __scy_ab_POS_Z = onFootData[PR_position][2];
+        // TO-DO: Copy this array as given by the PR_position key, instead of the values individually
+        __scy_ab_PLAYER_DATA[playerid][0] = onFootData[PR_position][0];
+        __scy_ab_PLAYER_DATA[playerid][1] = onFootData[PR_position][1];
+        __scy_ab_PLAYER_DATA[playerid][2] = onFootData[PR_position][2];
     }
     
     #if defined __scy_ab_OnIncomingPacket
