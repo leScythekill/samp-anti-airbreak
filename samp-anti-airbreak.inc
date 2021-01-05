@@ -86,7 +86,7 @@ public OnGameModeInit()
     #else
         #define _ALS_OnGameModeInit
     #endif
-    #define OnFilterScriptInit AntiAirbreak_OnGameModeInit
+    #define OnGameModeInit AntiAirbreak_OnGameModeInit
     #if defined AntiAirbreak_OnGameModeInit
         forward AntiAirbreak_OnGameModeInit();
     #endif
