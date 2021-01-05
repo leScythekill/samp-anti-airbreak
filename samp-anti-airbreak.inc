@@ -113,7 +113,9 @@ public AntiAirbreak_OnFootSync(playerid, packetid, BitStream:bs)
                 || onFootData[PR_position][0] < __scy_ab_POS_X - 1.3 || onFootData[PR_position][1] < __scy_ab_POS_Y - 1.3
                 || onFootData[PR_position][2] < __scy_ab_POS_Z - 1.3)
                 {
-                    if((gettime() - __scy_ab__LAST_CALL) < 2 && __scy_ab__LAST_CALL != 0) OnPlayerAirBreak(playerid);
+                    if((gettime() - __scy_ab__LAST_CALL) < 2 && __scy_ab__LAST_CALL != 0)
+                        CallLocalFunction("OnPlayerAirBreak", "d", playerid);
+                    
                     __scy_ab__LAST_CALL = gettime();
                 }
             }
